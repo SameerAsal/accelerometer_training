@@ -1,0 +1,228 @@
+%
+% Use the standard article template.
+%
+\documentclass{article}
+
+% The geometry package allows for easy page formatting.
+\usepackage{geometry}
+\geometry{letterpaper}
+
+% Load up special logo commands.
+\usepackage{doc}
+
+% Package for formatting URLs.
+\usepackage{url}
+
+% Packages and definitions for graphics files.
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+%
+% Set the title, author, and date.
+%
+\title{Accelerometer data classification using Neural Networks}
+\author{Sameer AbuAsal}
+\date{}
+
+%
+% The document proper.
+%
+\begin{document}
+
+% Add the title section.
+\maketitle
+
+% Add an abstract.
+\abstract{
+
+Human activity is a great source for building new kind of services that take user status into consideration. Equipping 
+a service provided by a phone application with the status of the user means richer and more engaging services. In 
+this work we present a neural based classifier that is able to detect the status of the human body from readings of 
+accelerometers placed on different parts of the body. We show how different configuration of the neural network and 
+data preprocessing can change the accuracy of our prediction, we also show how we can predict the movement using one 
+accelerometer reading to simulate the effect of having a mobile device in users pocket or a smart watch attached to 
+the user's wrist. To the best of our knowledge this is the first study that considers a single source of data and 
+achieves (676876\%) accuracy. 
+}
+
+
+
+% Add various lists on new pages.
+\pagebreak
+\tableofcontents
+
+\pagebreak
+\listoffigures
+
+\pagebreak
+\listoftables
+
+% Start the paper on a new page.
+\pagebreak
+
+%
+% Body text.
+%
+\section{Introduction}
+\label{introduction}
+
+With the increasing use of smart mobile devices new opportunities are present for richer and more engaging services 
+that cater to every need of its users. Most of these smart devices are equipped with accelerometers that give an
+indication of of the relative position of the device and its user at any point in time. Using this data to identify the 
+status of body movement provides an accurate record of the physical activity of the user which has applications related 
+to the health care and interactive design for mobile devices' applications. 
+
+In this work we seek to build a neural network based classifier that is able to correctly identify a pattern of human body 
+movement from a series of readings, we discuss different design choices and report their impact on prediction accuracy. The 
+rest of this paper goes as follows; section ~\ref{DataSet} describes the dataset we are using, section ~\ref{accelerometer} 
+provides a simple description of the inner workings of accelerometers, section ~\ref{meth} describes the methodology we 
+used, sec ~\ref{conclusion} discusses a summary of the results we are getting and includes ideas for future work.
+
+\section{accelerometer}
+\label{accelerometer} 
+MAGIC MAGIC MAGIC Oh MY GOD !!
+
+\section{Data Set}
+\label{DataSet}
+
+Raw data we are using are based on the work by ~\cite{ugulino2012wearable} sectio 
+
+\section{Pluto Algorithm}
+\label{Pluto}
+Write stuff about Pluto here.
+
+\section{Motivation}
+
+While most work in automatic optimization ~\cite{bondhugula2008practical} use execution time as the sole metric for performance
+comparison; we argue that performance counters provide a more through understanding of what an optimization algorithm is doing correctly 
+and what aspects of the optimization are causing the performance to drop. Machine's performance is complex and abstracting all of it in  
+execution time an automatic optimizing loses opportunities for a better code generation.
+
+For this work we look at the cache and vectorization performance of transformed codes. We compare four version of kernels under study, 
+the original version as provided by the benchmark, a parallelized (by the host compiler), a tiled version and a Open-MP parallelized tiled 
+version by Pluto. Section~\ref{Perf} comments on performance of each of these versions for the kernels under study. Section~\ref{PAPI}
+comments on the measuring methodology and the counters we used.
+
+\section{Collecting Performance counters}
+\label{PAPI}
+For Performance counters' collection we use PAPI (cite PAPI). Table~\ref{events} shows events we use for vector related instructions and 
+for Cache.
+
+\begin{table}
+\label{events}
+\centering
+\begin{tabular}{|c|c|}\hline
+Event  & Description \\\hline
+SIMD\_FP\_256:PACKED\_DOUBLE & Number of AVX instructions executed for Double Precision FLOP \\\hline
+PAPI\_L2\_DCM               & Number of cache misses (load and store) in L2 caches \\\hline
+PAPI\_L2\_STM               & Number of L2 store cache misses  \\\hline
+FP\_COMP\_OPS\_EXE& \begin{tabular}{c|c}
+                     SSE\_FP\_PACKED\_DOUBLE: & SSE for Double precision FLOP \\\hline 
+                     SSE\_FP\_SCALAR\_DOUBLE & Scalar double precision FLOP\\\hline
+                     \end{tabular}\\\hline
+\end{tabular}
+\caption{Event Description}
+\end{table}
+
+\section{Performance comparison}
+\label{Perf}
+In this section we comment on the performance of three kernels from the Polybench suite and how it was affected by the transformation. 
+
+\subsection{Adi} {
+Alternating direction implicit method is a finite difference method for solving partial differential equations. It is one of the where
+Pluto Algorithm is causing the execution time to increase. Looking more closely at the counters (figure ~\ref{adi_perf}) collected to 
+understand these results we notice even though Pluto generates a more cache friendly code as the number of cache misses is dropping for 
+the timed version. However, looking at the SIMD instruction counts drops to zero suggesting that tiling made it impossible for the host 
+compiler to generate vectorized code. (I have to look more into why this happened actually, the code is vectorizable dependence wise, could
+be that the index  bounds are too complex). While cache misses are reduced in general counters show an increase in the cache store misses
+for parallelized versions of the code (Why ?!), the increase in store misses are also noticed in other kernels.
+}
+\graphicspath{{./latexgraphs/}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpeg}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=2.5in]{adi_SIMD_FP_256PACKED_DOUBLE_perf}
+\includegraphics[width=2.5in]{adi_EXEC_TIME_perf}
+\includegraphics[width=2.5in]{adi_PAPI_L2_DCM_perf}
+\includegraphics[width=2.5in]{adi_PAPI_L2_STM_perf}
+\includegraphics[width=2.5in]{adi_PAPI_L1_DCM_perf}
+\includegraphics[width=2.5in]{adi_PAPI_L1_LDM_perf}
+\caption{ADI Performance}
+\label{adi_perf}
+\end{figure} 
+
+\subsection{LU} {
+L-U decomposition. This is a LAPACK kernel used for solving system of linear equations.Tiling transformation shows improvement in cache
+locality, this is shown in the decrease in the number of load cache misses. Store cache misses are increase for the parallelized version
+of the code. Vectorization is not affected by the tiling transformation, both the original version of the code and the tiled one show
+use of AVX packed floating point vector instructions. Performance counters for the LU kernel are in figure ~\ref{lu_perf}
+
+\graphicspath{{./latexgraphs/}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpeg}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=2.5in]{lu_SIMD_FP_256PACKED_DOUBLE_perf}
+\includegraphics[width=2.5in]{lu_EXEC_TIME_perf}
+\includegraphics[width=2.5in]{lu_PAPI_L2_DCM_perf}
+\includegraphics[width=2.5in]{lu_PAPI_L2_STM_perf}
+\includegraphics[width=2.5in]{lu_PAPI_L1_DCM_perf}
+\includegraphics[width=2.5in]{lu_PAPI_L1_LDM_perf}
+\caption{LU Performance}
+\label{lu_perf}
+\end{figure} 
+}
+
+\subsection{Jacobi Stencil} {
+Jacobi is an example of a stencil computation that is a part of many scientific simulations like heat transfer and Computational Fluid
+Dynamics simulations. The one dimensional version of the kernel suffers load cache misses for the original version of the code, transformed
+(tiled) version of the code on the other hand eliminates the misses to almost zero, the parallelized version exhibits store misses.
+I am starting to believe that this these store misses are somehow caused by a write back cache (look more into this ??!). Two dimensional 
+version shows the same behavior under a transformation. Cache misses are higher in this version given the bigger memory working set.
+}
+
+\graphicspath{{./latexgraphs/}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpeg}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=2.5in]{lu_SIMD_FP_256PACKED_DOUBLE_perf}
+\includegraphics[width=2.5in]{lu_EXEC_TIME_perf}
+\includegraphics[width=2.5in]{lu_PAPI_L2_DCM_perf}
+\includegraphics[width=2.5in]{lu_PAPI_L2_STM_perf}
+\includegraphics[width=2.5in]{lu_PAPI_L1_DCM_perf}
+\includegraphics[width=2.5in]{lu_PAPI_L1_LDM_perf}
+\caption{LU Performance}
+\label{lu_perf} %Must be after the caption, read that somewhere in the WikiBook.
+\end{figure} 
+
+\section{Future Step for this work}
+Up until this point we simply ran experiments showing the execution times without specific analysis as to where most of 
+the execution time is spent. I have the following suggestions for next step this work could take:  
+
+\begin{enumerate}
+  \item Come up with a scheduling methodology that is hardware Aware. Scheduling for Xeon-Phi cores is different than scheduling 
+        for an regular desktop CPU.
+  \item statically identify the memory and compute requirements of the kernel under study, use that and machine characteristic (memory 
+        bandwidth, frequency) to run the code on a CPU or GPU.
+  \item Predict the cache friendliness of the code statically using the Polyhedral Model. Polyhedral based cache simulator maybe ?   
+\end{enumerate}
+
+
+\section{Predicting Energy}
+Energy has recently become an important factor for compiler optimizations and tuning. Predicting energy consumption for a piece of code 
+is necessary for both power constraint environments and supercomputers . In this section, we present a simple technique 
+to statically predict energy consumption of affine code. We first model the hardware energy profile by correlating hardware performance
+counters with energy observed for a piece of code, we identify set of counters that most contribute to the energy consumption of a piece of
+code for an architecture, we the employ polyhedral techniques to predict values for these counters statically. Section ~\ref{RAPl} includes
+a discussion for measuring and reporting of energy in different architectures  and section ~\ref{discussion_energy} 
+
+~\cite{baskaran2008compiler} and ~\cite{bondhugula2008practical}
+
+% Generate the bibliography.
+\bibliography{thesis}{}
+\bibliographystyle{plain}
+
+\end{document}
