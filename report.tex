@@ -105,6 +105,7 @@ parts of the body, waist, arm, leg and foot. Figure ~\ref{acc_placement} shows t
 Write stuff about Pluto here.
 
 \section{Methodology}
+\label{meth}
 
 Previous work in detecting the body posture ~\cite{ugulino2012wearable} used decision tree algorithms , namely C4.5,  with intensive 
 data preprocessing and feature extraction before actually using the data for classification; work include finding the roll and 
@@ -116,6 +117,9 @@ and to let the neural network the feature extraction. We try to train our networ
   \item Using unprocessed rows and feeding them to the network, section ~\ref{simple_rows} discusses that.
   \item Using deltas of two consecutive  rows or more tan two rows, section ~\ref{consecutive_rows} discusses that. 
   \item A person specific learner where we only do the training for one person  for increased accuracy. 
+  \item Use only one accelerometer to  detect body posture. This gives a more realistic use case where the user only 
+        has one source of data; a smart phone. Section ~\ref{single_acc} discusses that.
+  \item Using recurrent neural newtwork to classify raw data. Section ~\ref{rec_neural} discusses this work.
 \end{enumerate}  
 
 \section{Classification using raw rows}
@@ -127,6 +131,11 @@ MAGIC MAGIC MAGIC.
 \label{consecutive_rows}
 MAGIC MAGIC MAGIC.
 
+\section{Single source of data} 
+\label{single_acc}
+
+\section{Recurrent neural network}
+\label{rec_neural}
 
 
 \section{Future Step for this work}
@@ -140,7 +149,7 @@ MAGIC MAGIC
 \end{enumerate}
 
 % Generate the bibliography.
-\bibliography{thesis}{}
+\bibliography{report}{}
 \bibliographystyle{plain}
 
 \end{document}
