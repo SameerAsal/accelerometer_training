@@ -1,0 +1,12 @@
+*.bib 
+*.aux 
+*.lof
+*.log
+*.swp
+report.aux
+2012.Ugulino.WearableComputing.HAR.Classifier.RIBBON.pdf
+*.bbl
+*.blg
+*.lot
+*.toc
+

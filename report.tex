@@ -22,7 +22,7 @@
 % Set the title, author, and date.
 %
 \title{Accelerometer data classification using Neural Networks}
-\author{ Sameer, Shantanu Rekah, Eera}
+\author{ Sameer, Shantanu, Rekah, Eera}
 \date{}
 
 %
@@ -44,11 +44,6 @@ accelerometer reading to simulate the effect of having a mobile device in users 
 the user's wrist. To the best of our knowledge this is the first study that considers a single source of data and 
 achieves (676876\%) accuracy. 
 }
-
-
-
-
-
 
 % Add various lists on new pages.
 \pagebreak
@@ -77,22 +72,22 @@ to the health care and interactive design for mobile devices' applications.
 
 In this work we seek to build a neural network based classifier that is able to correctly identify a pattern of human body 
 movement from a series of readings, we discuss different design choices and report their impact on prediction accuracy. The 
-rest of this report goes as follows; section ~\ref{DataSet} describes the dataset we are using, section ~\ref{accelerometer} 
-provides a simple description of the inner workings of accelerometers for the inexperienced reader, section ~\ref{meth} describes 
-the methodology we used, sec ~\ref{conclusion} discusses a summary of the results we are getting and includes ideas for future work.
+rest of this report goes as follows; section~\ref{DataSet} describes the dataset we are using, section~\ref{accelerometer} 
+provides a simple description of the inner workings of accelerometers for the inexperienced reader, section~\ref{meth} describes 
+the methodology we used, section~\ref{conclusion} discusses a summary of the results we are getting and includes ideas for future work.
 
-\section{accelerometer}
-\DeclareGraphicsExtensions{.pdf,.png,.jpeg}
+\section{Accelerometer}
 \label{accelerometer} 
-MAGIC MAGIC MAGIC Oh MY GOD !!
+\DeclareGraphicsExtensions{.pdf,.png,.jpeg}
+MAGIC MAGIC MAGIC OH MY GOD !!
 
 \section{Data Set}
 \label{DataSet}
 
-Raw data we are using are based on the work by ~\cite{ugulino2012wearable}. The data set report 8 hours of activity of 4 subject tests 
+Raw data we are using are based on the work by~\cite{ugulino2012wearable}. The data set report 8 hours of activity of 4 subject tests 
 of varying age , weight, height and gender. Each subject provided two hours of activity of postures varying between (Standing,
 sitting down, sitting , standing up and walking). The data provided is a continuous stream of reading from sensors placed of four 
-parts of the body, waist, arm, leg and foot. Figure ~\ref{acc_placement} shows the places of these accelerators.   
+parts of the body, waist, arm, leg and foot. Figure~\ref{acc_placement} shows the places of these accelerators~\cite{ugulino2012wearable}. 
 
 
 \begin{figure}[h]
@@ -100,46 +95,43 @@ parts of the body, waist, arm, leg and foot. Figure ~\ref{acc_placement} shows t
 \includegraphics[width=2.5in]{acc_placement}
 \caption{Accelerometer Placement}
 \label{acc_placement}
-\end{figure} 
+\end{figure}
  
-
-\section{Pluto Algorithm}
-\label{Pluto}
-Write stuff about Pluto here.
 
 \section{Methodology}
 \label{meth}
 
-Previous work in detecting the body posture ~\cite{ugulino2012wearable} used decision tree algorithms , namely C4.5,  with intensive 
+Previous work in detecting the body posture~\cite{ugulino2012wearable} used decision tree algorithms , namely C4.5,  with intensive 
 data preprocessing and feature extraction before actually using the data for classification; work include finding the roll and 
 pitch angles for the body and also the variance in roll and pitch . In this work we opted for doing as possible of data preprocessing
 and to let the neural network the feature extraction. We try to train our network with the following variants:
 
-
 \begin{enumerate}
-  \item Using unprocessed rows and feeding them to the network, section ~\ref{simple_rows} discusses that.
-  \item Using deltas of two consecutive  rows or more tan two rows, section ~\ref{consecutive_rows} discusses that. 
-  \item A person specific learner where we only do the training for one person  for increased accuracy. 
-  \item Use only one accelerometer to  detect body posture. This gives a more realistic use case where the user only 
-        has one source of data; a smart phone. Section ~\ref{single_acc} discusses that.
-  \item Using recurrent neural newtwork to classify raw data. Section ~\ref{rec_neural} discusses this work.
+  \item Using unprocessed rows and feeding them to the network, section~\ref{simple_rows} discusses that.
+  \item Using deltas of two consecutive  rows or more than two rows, section~\ref{consecutive_rows} discusses that. 
+  \item A person specific learner where we only do the training for one person for increased accuracy. 
+  \item Use only one accelerometer to detect body posture. This gives a more realistic use case where the user only 
+        has one source of data; a smart phone. Section~\ref{single_acc} discusses that.
+  \item Using recurrent neural newtwork to classify raw data. Section~\ref{rec_neural} discusses this work.
+  \item Hello 
 \end{enumerate}  
 
-\section{Classification using raw rows}
+\subsection{Classification using raw rows}
 \label{simple_rows}
 MAGIC MAGIC MAGIC.
 
-
-\section{Consecutive Rows}
+\subsection{Consecutive Rows}
 \label{consecutive_rows}
 MAGIC MAGIC MAGIC.
 
-\section{Single source of data} 
+\subsection{Single source of data} 
 \label{single_acc}
 
-\section{Recurrent neural network}
+\subsection{Recurrent neural network}
 \label{rec_neural}
 
+\section {Conclusion}
+\label{conclusion}
 
 \section{Future Step for this work}
 MAGIC MAGIC 
@@ -154,5 +146,4 @@ MAGIC MAGIC
 % Generate the bibliography.
 \bibliography{report}{}
 \bibliographystyle{plain}
-
 \end{document}
