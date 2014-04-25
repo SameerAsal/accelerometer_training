@@ -93,7 +93,7 @@ class simple_classifier():
     for sample in ds.all_moves:
       self.alldata.addSample(sample.get_features(), [ds.get_classes().index(sample.class_)])
 
-    self.tstdata, self.trndata = self.alldata.splitWithProportion( 0.25 )
+    self.tstdata, self.trndata = self.alldata.splitWithProportion(0.25)
     self.trndata._convertToOneOfMany()
     self.tstdata._convertToOneOfMany()
 
@@ -108,17 +108,15 @@ class simple_classifier():
   def start_training(self):
     #Interactively train the data, see how error bars porgress.
     for i in range(20):
-      print "training step: " + str(i)
+      print "training step: " , i
       self.trainer.trainEpochs(1)
-      self.trnresult = percentError(self.trainer.testOnClassData(),
-                                    self.trndata['class'])
-      self.tstresult = percentError(self.trainer.testOnClassData(
-           dataset=self.tstdata), self.tstdata['class'])
+      self.trnresult = percentError(self.trainer.testOnClassData(), self.trndata['class'])
+      self.tstresult = percentError(self.trainer.testOnClassData(dataset=self.tstdata), self.tstdata['class'])
 
       print "epoch: %4d" % self.trainer.totalepochs, \
           "  train error: %5.2f%%" % self.trnresult, \
           "  test error: %5.2f%%" % self.tstresult
-      pdb.set_trace()
+#      pdb.set_trace()
    
 def main():
   src = data_source()
