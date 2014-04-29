@@ -9,4 +9,4 @@ report.aux
 *.blg
 *.lot
 *.toc
-
+*.pyc
