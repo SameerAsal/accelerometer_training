@@ -162,9 +162,8 @@ to the Neural Network gives a sense of of this movement for the network to learn
 To build this moving window we take 8 consecutive row, accounting for 1 second of time, and we find the difference in readings between the 
 beginning and the end of the window. We tried different network configuration and architectures, increasing the number of Neurons gave some
 good results with best prediction accuracy for validation data of 99.7\%. Figure~\ref{14_confusion} shows the confusion matrix and 
-accuracy for a network of 372 neurons in the hidden layer shown in in figure~\ref{14_net}.
-
-
+accuracy for a network of 372 neurons in the hidden layer shown in in figure~\ref{14_net}, figure~\ref{14_train} shows the gradient values 
+along the training steps and the number of validation checks.
 \begin{figure}
 \includegraphics{14_net}
 \caption{Neural Network for moving window}
@@ -172,23 +171,26 @@ accuracy for a network of 372 neurons in the hidden layer shown in in figure~\re
 \end{figure}
 
 \begin{figure}
- \begin{flushleft}
-  \includegraphics{14_confusion}
-  \caption{Confusion matrix results for moving window}
-  \label{14_confusion}
- \end{flushleft}
+\centering
+\includegraphics[width=3in]{14_train}
+\caption{Gradient values and validation checks}
+\label{14_train}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=3in]{14_confusion}
+\caption{Confusion matrix results for moving window}
+\label{14_confusion}
 \end{figure}
 
 
 \subsection{Single source of data} 
 \label{single_acc}
+Good prediction accuracy we achieved with readings from four different accelerometers made us think of what accuracy we can sustain with 
+only one accelerometer. In part this also mimics the situation we have in real life where the subject holds a phone in his hand or in her
+pocket. 
 
-%\subsection{Recurrent neural network}
-%\label{rec_neural}
-
-In this section we try to use recurrent Neural networks instead of feed forward 
-networks to build a learner for the continuous data. Wu use Continuous time recurrent 
-Neural networks.  
 
 %\begin{figure}[h]
 %\centering
@@ -201,9 +203,9 @@ Neural networks.
 \label{conclusion}
 
 \section{Future Step for this work}
-MAGIC MAGIC 
-
-
+Given the good results we sustained using this work using Neural Network, a good next step to put this work into use would be to fit this 
+trained neural network into a mobile device. Considerations must be paid to creating an efficient implementation for the network so that 
+it doesn't drain the mobile device's battery.
 % Generate the bibliography.
 \bibliography{report}{}
 \bibliographystyle{plain}
