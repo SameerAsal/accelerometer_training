@@ -21,13 +21,13 @@ from pybrain.structure import FeedForwardNetwork
 #x1;    y1;    z1;    x2;    y2;    z2;x3;y3;z3;x4;y4; z4;        class
 #sitting_down= filter(lambda ll: ll[-1].find("sittingdown") != -1 , sensors)
 
-class simple_fnn_classifier():
-  num_time_steps    = 1
+class window_fnn_classifier():
+  num_time_steps    = 4
   def __init__(self, ds): 
     self.max_ratio    = 0.0
     self.correct_perc = []
 
-    num_inputs = ds.num_features * simple_fnn_classifier.num_time_steps
+    num_inputs = ds.num_features * window_fnn_classifier.num_time_steps
 
     self.alldata = ClassificationDataSet(num_inputs,
                                          target = 1, 
@@ -35,11 +35,11 @@ class simple_fnn_classifier():
                                          class_labels=ds.get_classes())
 
     for Idx in range(len(ds.all_moves)):
-      if not (Idx + simple_fnn_classifier.num_time_steps < len(ds.all_moves)):
+      if not (Idx + window_fnn_classifier.num_time_steps < len(ds.all_moves)):
         continue
   
       features  = []
-      for i in range(simple_fnn_classifier.num_time_steps):
+      for i in range(window_fnn_classifier.num_time_steps):
         features = features + ds.all_moves[Idx + i].get_features()
  
       self.alldata.addSample(features, [ds.get_classes().index(ds.all_moves[Idx].class_)])
@@ -65,27 +65,28 @@ class simple_fnn_classifier():
     hidden_layer_1  = SigmoidLayer(12)
     output_layer    = LinearLayer(self.trndata.outdim)
     
-    self.fnn = FeedForwardNetwork()
+    self.window_fnn = FeedForwardNetwork()
 
-    self.fnn.addInputModule(in_layer)
-    self.fnn.addModule(hidden_layer_0)
-    self.fnn.addModule(hidden_layer_1)
-    self.fnn.addOutputModule(output_layer)
+    self.window_fnn.addInputModule(in_layer)
+    self.window_fnn.addModule(hidden_layer_0)
+    self.window_fnn.addModule(hidden_layer_1)
+    self.window_fnn.addOutputModule(output_layer)
   
     #Now add the connections:
     in_to_h0 = FullConnection(in_layer      , hidden_layer_0)
     h0_to_h1 = FullConnection(hidden_layer_0, hidden_layer_1)
     h1_to_out= FullConnection(hidden_layer_1, output_layer)
 
-    self.fnn.addConnection(in_to_h0)
-    self.fnn.addConnection(h0_to_h1)
-    self.fnn.addConnection(h1_to_out)
-    self.fnn.sortModules()
+    self.window_fnn.addConnection(in_to_h0)
+    self.window_fnn.addConnection(h0_to_h1)
+    self.window_fnn.addConnection(h1_to_out)
+    self.window_fnn.sortModules()
 
-    self.trainer = BackpropTrainer(self.fnn, dataset=self.trndata, momentum=0.1, verbose=True, weightdecay=0.01)
+    self.trainer = BackpropTrainer(self.window_fnn, dataset=self.trndata, momentum=0.1, verbose=True, weightdecay=0.01)
+    self.write_out()
 
   def start_training(self):
-    f = open("./results/fnn_perf.txt", "w");
+    f = open( "./results/" + str(window_fnn_classifier.num_time_steps) + "window_fnn_perf.txt", "w")
     for i in range(1000):
       print "training step: " , i
       self.trainer.trainEpochs(1)
@@ -98,9 +99,9 @@ class simple_fnn_classifier():
     print "epoch:" , self.trainer.totalepochs
     correct = 0
     wrong = 0
-    self.fnn.sortModules()
+    self.window_fnn.sortModules()
     for Idx in range (len(self.tstdata)):
-      out = self.fnn.activate(self.tstdata['input'][Idx])
+      out = self.window_fnn.activate(self.tstdata['input'][Idx])
       if argmax(out) == argmax(self.tstdata['target'][Idx]) : 
         correct += 1
       else:
@@ -119,4 +120,4 @@ class simple_fnn_classifier():
     return 1 - correct_ratio
  
   def write_out(self, name=""):
-    NetworkWriter.writeToFile(self.fnn,  "./results/" + name + "fnn.xml")
+    NetworkWriter.writeToFile(self.window_fnn,  "./results/" + name + str(window_fnn_classifier.num_time_steps) +  "_window_fnn.xml")

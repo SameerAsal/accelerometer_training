@@ -21,14 +21,20 @@
 %
 % Set the title, author, and date.
 %
+
+\begin{document}
+
 \title{Accelerometer data classification using Neural Networks}
 \author{ Sameer, Shantanu, Rekah, Eera}
-\date{}
 
-%
-% The document proper.
-%
-\begin{document}
+% Add various lists on new pages.
+\tableofcontents
+\pagebreak
+\listoffigures
+
+% Start the paper on a new page.
+\pagebreak
+
 
 % Add the title section.
 \maketitle
@@ -42,25 +48,9 @@ accelerometers placed on different parts of the body. We show how different conf
 data preprocessing can change the accuracy of our prediction, we also show how we can predict the movement using one 
 accelerometer reading to simulate the effect of having a mobile device in users pocket or a smart watch attached to 
 the user's wrist. To the best of our knowledge this is the first study that considers a single source of data and 
-achieves (676876\%) accuracy. 
+achieves (96\%) accuracy. 
 }
 
-% Add various lists on new pages.
-\pagebreak
-\tableofcontents
-
-\pagebreak
-\listoffigures
-
-\pagebreak
-\listoftables
-
-% Start the paper on a new page.
-\pagebreak
-
-%
-% Body text.
-%
 \section{Introduction}
 \label{introduction}
 
@@ -72,15 +62,9 @@ to the health care and interactive design for mobile devices' applications.
 
 In this work we seek to build a neural network based classifier that is able to correctly identify a pattern of human body 
 movement from a series of readings, we discuss different design choices and report their impact on prediction accuracy. The 
-rest of this report goes as follows; section~\ref{DataSet} describes the dataset we are using, section~\ref{accelerometer} 
-provides a simple description of the inner workings of accelerometers for the inexperienced reader, section~\ref{meth} describes 
+rest of this report goes as follows; section~\ref{DataSet} describes the dataset we are using, section~\ref{methodology} describes 
 the methodology we used, section~\ref{conclusion} discusses a summary of the results we are getting and includes ideas for future work.
 
-\section{Accelerometer}
-\label{accelerometer} 
-\DeclareGraphicsExtensions{.pdf,.png,.jpeg}
-
-MAGIC MAGIC MAGIC OH MY GOD !!
 
 \section{Data Set}
 \label{DataSet}
@@ -88,48 +72,119 @@ MAGIC MAGIC MAGIC OH MY GOD !!
 Raw data we are using are based on the work by~\cite{ugulino2012wearable}. The data set report 8 hours of activity of 4 subject tests 
 of varying age , weight, height and gender. Each subject provided two hours of activity of postures varying between (Standing,
 sitting down, sitting , standing up and walking). The data provided is a continuous stream of reading from sensors placed of four 
-parts of the body, waist, arm, leg and foot. Figure~\ref{acc_placement} shows the places of these accelerators~\cite{ugulino2012wearable}. 
+parts of the body, waist, arm, leg and foot. Figure~\ref{acc_placement} shows the places of these accelerators~\cite{ugulino2012wearable}.
+Figure~\ref{sample_dist} shows the distribution of the postures among the samples.
+
+Along with the three dimensional input from each accelerometer,which is adds up to twelve readings for each time step, the data set 
+also provides some biometrics that are subject specific. This could help improving the prediction accuracy given that different users might
+move differently and having these metrics helps the neural network account for that. These biometrics include the following: 
+
+\begin{enumerate}
+  \item Age: Humans movement pattern tend to change\\evolve in different ages. 
+  \item Weight: Weight affects the way humans move which also affects the accelerometer data.
+  \item Height: Reading along the Y-direction (height direction) are affected by subject's height.
+  \item Gender: Males and females have different patterns for movement, especially for walking. 
+\end{enumerate}  
 
 
-\begin{figure}[h]
+\begin{figure}
 \centering
 \includegraphics[width=2.5in]{acc_placement}
 \caption{Accelerometer Placement}
 \label{acc_placement}
 \end{figure}
- 
+
+\begin{figure}
+\centering
+\includegraphics[width=3.0in]{samples_piechart}
+\caption{Sample data distribution}
+\label{sample_dist}
+\end{figure}
+
+\section{Frameworks}
+\label{tools}
+
+During the course of our experiments we tried different tools and libraries before settling on doing all of out experiments using 
+Matlab~\cite{MATLAB:2014}. We used used the following tools:
+
+\subsection{PyBrain}
+PyBrain~\cite{pybrain2010jmlr} is a strong and modular Python library for building machine learning applications. It
+support for building reinforcement learning and Neural network based learning. It allows for building flexible architecture for different
+kind of networks (Feed Forward, Recurrent) it also has predefined layers for different layer for  network architectures like 
+LSTM~\cite{hochreiter1997long} and Linear layers. It also allows for different kinds of activation functions. We used PyBrain to train FFN 
+on raw entries of the data with  different number of layers and number of neurons in hidden layers, the maximum classification 
+accuracy we got was 73\% after around 200 epoch steps, feeding the network seven consecutive rows at a time  raised the accuracy to 80\%.
+We stopped experimenting with PyBrain because of the high execution time we were facing. Training a thousand steps for the FFN with 
+seven row input took about 5 hours, we had to look for some other platform. 
+
+
+\subsection{NeuroLab}
+NeuroLab~\cite{NeuroLab:Online} is a simple and powerful SciPy Python Python based library for building Neural Network. It is not as 
+configurable or developed as PyBrain. Unfortunately, given the large data set we had and due the fact that this is a Pure Python 
+based library we faced the same problems of high execution time. 
+
+\subsection{Other libraries}
+These include Bain.js~\cite{BrainJs} and Cuda-Convert~\cite{Cuda-convert}. Initial use of these two libraries didn't provide any promising
+results they showed to be not up to the speed we needed  as well.  
+
 
 \section{Methodology}
 \DeclareGraphicsExtensions{.pdf,.png,.jpeg}
-\label{meth}
+\label{methodology}
 
-Previous work in detecting the body posture~\cite{ugulino2012wearable} used decision tree algorithms , namely C4.5,  with intensive 
+Previous work in detecting the body posture~\cite{ugulino2012wearable} used decision tree algorithms, namely C4.5, with intensive 
 data preprocessing and feature extraction before actually using the data for classification; work include finding the roll and 
-pitch angles for the body and also the variance in roll and pitch . In this work we opted for doing as possible of data preprocessing
+pitch angles for the body and also the variance in roll and pitch. In this work we opted for doing as possible of data preprocessing
 and to let the neural network the feature extraction. We try to train our network with the following variants:
 
 \begin{enumerate}
   \item Using unprocessed rows and feeding them to the network, section~\ref{simple_rows} discusses that.
-  \item Using deltas of two consecutive  rows or more than two rows, section~\ref{consecutive_rows} discusses that. 
+  \item Using deltas of two consecutive rows or more than two rows, section~\ref{consecutive_rows} discusses that. 
   \item A person specific learner where we only do the training for one person for increased accuracy. 
   \item Use only one accelerometer to detect body posture. This gives a more realistic use case where the user only 
         has one source of data; a smart phone. Section~\ref{single_acc} discusses that.
-  \item Using recurrent neural network to classify raw data. Section~\ref{rec_neural} discusses this work.
-  \item Hello 
 \end{enumerate}  
+
+Doing these operations and trying different versions we managed to achieve up to 99.85\% classification accuracy which is higher 
+than the one achieved by~\cite{ugulino2012wearable} which accounted to 99.4\%. 
+
 
 \subsection{Classification using raw rows}
 \label{simple_rows}
+For an initial start we built Neural networks that take all the readings in separate rows. We relied on the idea that even though the
+human goes through the same stages between standing up and sitting down the subject might actually have a subtle difference in the exact
+points that the accelerometer reads the data at TODO SHANTANU I NEED YOUR RUN FOR THIS !!!
 
-\subsection{Consecutive Rows}
+\subsection{A Moving window}
 \label{consecutive_rows}
-MAGIC MAGIC MAGIC.
+As described in section~\ref{DataSet} the rows of data we have are actually consecutive in time, mashing more than one row into single input
+to the Neural Network gives a sense of of this movement for the network to learn; for this we came up with the idea of a moving window.
+To build this moving window we take 8 consecutive row, accounting for 1 second of time, and we find the difference in readings between the 
+beginning and the end of the window. We tried different network configuration and architectures, increasing the number of Neurons gave some
+good results with best prediction accuracy for validation data of 99.7\%. Figure~\ref{14_confusion} shows the confusion matrix and 
+accuracy for a network of 372 neurons in the hidden layer shown in in figure~\ref{14_net}.
+
+
+\begin{figure}
+\includegraphics{14_net}
+\caption{Neural Network for moving window}
+\label{14_net}
+\end{figure}
+
+\begin{figure}
+ \begin{flushleft}
+  \includegraphics{14_confusion}
+  \caption{Confusion matrix results for moving window}
+  \label{14_confusion}
+ \end{flushleft}
+\end{figure}
+
 
 \subsection{Single source of data} 
 \label{single_acc}
 
-\subsection{Recurrent neural network}
-\label{rec_neural}
+%\subsection{Recurrent neural network}
+%\label{rec_neural}
 
 In this section we try to use recurrent Neural networks instead of feed forward 
 networks to build a learner for the continuous data. Wu use Continuous time recurrent 
@@ -148,12 +203,6 @@ Neural networks.
 \section{Future Step for this work}
 MAGIC MAGIC 
 
-\begin{enumerate}
-  \item Sameer
-  \item is  
-  \item the 
-  \item Best
-\end{enumerate}
 
 % Generate the bibliography.
 \bibliography{report}{}
